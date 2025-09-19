@@ -19,7 +19,7 @@
 
 # Installation of tools
 
-##The NCBI AMRfinder plus docker was set up using the command
+## The NCBI AMRfinder plus docker was set up using the command
 ```
 docker pull ncbi/amr
 ```

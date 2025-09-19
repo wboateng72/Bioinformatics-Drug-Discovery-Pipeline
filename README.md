@@ -19,14 +19,14 @@
 
 # Installation of tools
 
-## The NCBI AMRfinder plus docker was set up using the command
+### The NCBI AMRfinder plus docker was set up using the command
 ```
 docker pull ncbi/amr
 ```
 
 # Installation of databases
 
-## The human genome was downloaded and set up using the commands
+### The human genome was downloaded and set up using the commands
 ```
 wget https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/reference_proteomes/Eukaryota/UP000005640/UP000005640_9606.fasta.gz
 

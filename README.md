@@ -1,4 +1,4 @@
-### The pipeline generally consists of:
+# The pipeline generally consists of:
 
 - **Annotation of genomes**
 
@@ -17,14 +17,14 @@
 - **Druggability scoring**
 
 
-### Installation of tools
+# Installation of tools
 
-The NCBI AMRfinder plus docker was set up using the command
+##The NCBI AMRfinder plus docker was set up using the command
 ```
 docker pull ncbi/amr
 ```
 
-### Installation of databases
+# Installation of databases
 
 ## The human genome was downloaded and set up using the commands
 ```
@@ -32,6 +32,10 @@ wget https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase
 
 makeblastdb -in UP000005640_9606.fasta -dbtype prot -out human9606_db
 ```
+
+
+
+
 
 
 

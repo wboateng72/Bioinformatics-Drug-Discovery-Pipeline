@@ -66,9 +66,9 @@ def filter_fasta_by_pattern(fasta_file, pattern_file, output_file):
 
 if __name__ == "__main__":
     # Define your file names
-    fasta_input_file = "merged_proteins.faa"
-    pattern_input_file = "pattern.csv"
-    output_target_file = "core_proteins.faa" # New output file name
+    fasta_input_file = "output/CORE_PROT_CDS/merged_cds.fasta"
+    pattern_input_file = "output/CORE_PROT_CDS/core_protein_headers.csv"
+    output_target_file = "output/CORE_PROT_CDS/core_cds.fasta" # New output file name
     
     # Call the function to perform the filtering and write results
     filter_fasta_by_pattern(fasta_input_file, pattern_input_file, output_target_file)

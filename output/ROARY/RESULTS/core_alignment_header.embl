@@ -1,0 +1,79 @@
+ID   Genome standard; DNA; PRO; 1234 BP.
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   feature         1..240
+FT                   /label=atpE
+FT                   /locus_tag=atpE
+FT   feature         241..873
+FT                   /label=crp
+FT                   /locus_tag=crp
+FT   feature         874..1329
+FT                   /label=dksA
+FT                   /locus_tag=dksA
+FT   feature         1330..1626
+FT                   /label=fis
+FT                   /locus_tag=fis
+FT   feature         1627..1845
+FT                   /label=infA
+FT                   /locus_tag=infA
+FT   feature         1846..2340
+FT                   /label=lrp
+FT                   /locus_tag=lrp
+FT   feature         2341..3354
+FT                   /label=prs
+FT                   /locus_tag=prs
+FT   feature         3355..3960
+FT                   /label=rplD
+FT                   /locus_tag=rplD
+FT   feature         3961..4500
+FT                   /label=rplE
+FT                   /locus_tag=rplE
+FT   feature         4501..4872
+FT                   /label=rplN
+FT                   /locus_tag=rplN
+FT   feature         4873..5283
+FT                   /label=rplP
+FT                   /locus_tag=rplP
+FT   feature         5284..5670
+FT                   /label=rplQ
+FT                   /locus_tag=rplQ
+FT   feature         5671..6024
+FT                   /label=rplS
+FT                   /locus_tag=rplS
+FT   feature         6025..6381
+FT                   /label=rplT
+FT                   /locus_tag=rplT
+FT   feature         6382..6714
+FT                   /label=rplV
+FT                   /locus_tag=rplV
+FT   feature         6715..7029
+FT                   /label=rplX
+FT                   /locus_tag=rplX
+FT   feature         7030..7287
+FT                   /label=rpmA
+FT                   /locus_tag=rpmA
+FT   feature         7288..8277
+FT                   /label=rpoA
+FT                   /locus_tag=rpoA
+FT   feature         8278..8979
+FT                   /label=rpsC
+FT                   /locus_tag=rpsC
+FT   feature         8980..9291
+FT                   /label=rpsJ
+FT                   /locus_tag=rpsJ
+FT   feature         9292..9519
+FT                   /label=rpsR
+FT                   /locus_tag=rpsR
+FT   feature         9520..9798
+FT                   /label=rpsS
+FT                   /locus_tag=rpsS
+FT   feature         9799..10014
+FT                   /label=rpsU
+FT                   /locus_tag=rpsU
+FT   feature         10015..11346
+FT                   /label=secY
+FT                   /locus_tag=secY
+XX
+SQ   Sequence 1234 BP; 789 A; 1717 C; 1693 G; 691 T; 0 other;
+//

@@ -1,54 +1,45 @@
+###The pipeline generally consists of:
 
-1. **Annotation of genomes**
+- **Annotation of genomes**
 
+- **Pangenome analysis**
 
+- **Selection of core genes and proteins**
 
-The assembled genomes were annotated using prokka using the command : 
-prokka klebsiella.fasta \
-  --outdir prokka_klebsiella \
-  --prefix klebsiella \
-  --genus Klebsiella --species pneumoniae \
-  --locustag KPN --usegenus --cpus 12
+- **Filtering of human homologs**
 
+- **Pathway/metabolic analysis**
 
+- **Subcellular localization prediction**
 
+- **Virulence/AMR analysis**
 
-
-
-
-The protein.faa outputs were assembled in a single file called merged_proteins using the command: cat */*.faa > merged_proteins.faa
+- **Druggability scoring**
 
 
+###Installation of tools
 
+The NCBI AMRfinder plus docker was set up using the command
+```
+docker pull ncbi/amr
+```
 
+###Installation of databases
 
-The cds.ffn outputs were assembled in a single file called merged_cds using the command: cat */*.faa > merged_cds.fa
+##The human genome was downloaded and set up using the commands
+```
+wget https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/reference_proteomes/Eukaryota/UP000005640/UP000005640_9606.fasta.gz
 
-
-
-
-The pan genome was generated using Roary using the command:
-roary -e -n -v -p 12 -i 90 -cd 100 -f pangenome *.gff
-
-
-
-The CD-HIT program was used to cluster the proteins based on similarity using a threshold of 0.7 and word size 5 using the command: cd-hit -i core_proteins.faa -o clustered_core_proteins.faa -c 0.7 -n 5
-
-
-
-The CD-HIT program was used to cluster the cds based on similarity using a threshold of 0.8 and word size 5 using the command: cd-hit-est -i core_cds.fa -o clustered_core_cds.fa -c 0.8 -n 5
+makeblastdb -in UP000005640_9606.fasta -dbtype prot -out human9606_db
+```
 
 
 
-The VFDB database in Abricate was used to predict the virulence genes composition of the genomes using the clustered_core_cds.fa. The command used was: abricate --minid 80 --threads 12 clustered_core_cds.fa > virulence_genes.csv
-
-The human genome was downloaded using the command: wget https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/reference_proteomes/Eukaryota/UP000005640/UP000005640_9606.fasta.gz
-
-It was gunzipped
 
 
 
-The database was created using the command: makeblastdb -in UP000005640_9606.fasta -dbtype prot -out human9606_db
+
+
 
 Blasting was done using the command: blastp -query clustered_core_proteins.faa -db human9606_db -out results.txt -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore' -evalue 1e-5 -num_threads 12
 

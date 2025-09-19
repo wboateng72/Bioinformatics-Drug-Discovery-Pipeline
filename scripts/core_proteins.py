@@ -2,57 +2,65 @@ import csv
 from Bio import SeqIO
 
 # Input files
-gene_presence_file = "/Users/seqafrica/Desktop/drug_discovery/latest/gene_presence_absence.csv"
-clustered_proteins_file = "/Users/seqafrica/Desktop/drug_discovery/latest/clustered_proteins"
-protein_fasta_file = "/Users/seqafrica/Desktop/drug_discovery/latest/merged_proteins.faa"
+gene_presence_file = "/Users/seqafrica/PERSONAL_WORKSPACE/NOGUCHI FILES/GITHUB REPOSITORY/Bioinformatics-Drug-Discovery-Pipeline/output/CORE_PROT_CDS/gene_presence_absence.csv"
+clustered_proteins_file = "/Users/seqafrica/PERSONAL_WORKSPACE/NOGUCHI FILES/GITHUB REPOSITORY/Bioinformatics-Drug-Discovery-Pipeline/output/CORE_PROT_CDS/clustered_proteins"
+clustered_protein_fasta = "/Users/seqafrica/PERSONAL_WORKSPACE/NOGUCHI FILES/GITHUB REPOSITORY/Bioinformatics-Drug-Discovery-Pipeline/output/CORE_PROT_CDS/clustered_proteins.faa"
+output_fasta = "/Users/seqafrica/PERSONAL_WORKSPACE/NOGUCHI FILES/GITHUB REPOSITORY/Bioinformatics-Drug-Discovery-Pipeline/output/CORE_PROT_CDS/core_proteins.faa"
 
-# Output
-output_fasta_file = "/Users/seqafrica/Desktop/drug_discovery/latest/core_all_proteins.faa"
+import csv
+from Bio import SeqIO
 
-# Step 1: Identify core gene clusters (present in 100% of genomes)
-print("Parsing core gene clusters...")
-core_clusters = set()
+# Input files
+gene_presence_file = "/Users/seqafrica/PERSONAL_WORKSPACE/NOGUCHI FILES/GITHUB REPOSITORY/Bioinformatics-Drug-Discovery-Pipeline/output/CORE_PROT_CDS/gene_presence_absence.csv"
+clustered_proteins_file = "/Users/seqafrica/PERSONAL_WORKSPACE/NOGUCHI FILES/GITHUB REPOSITORY/Bioinformatics-Drug-Discovery-Pipeline/output/CORE_PROT_CDS/clustered_proteins"
+clustered_protein_fasta = "/Users/seqafrica/PERSONAL_WORKSPACE/NOGUCHI FILES/GITHUB REPOSITORY/Bioinformatics-Drug-Discovery-Pipeline/output/CORE_PROT_CDS/clustered_proteins.faa"
+output_fasta = "/Users/seqafrica/PERSONAL_WORKSPACE/NOGUCHI FILES/GITHUB REPOSITORY/Bioinformatics-Drug-Discovery-Pipeline/output/CORE_PROT_CDS/core_proteins.faa"
 
-with open(gene_presence_file, newline='') as csvfile:
-    reader = csv.DictReader(csvfile)
-    fieldnames = reader.fieldnames
+# Step 1. Count isolates = number of columns after "Avg group size nuc"
+with open(gene_presence_file, newline="") as f:
+    reader = csv.DictReader(f)
+    headers = reader.fieldnames
+    avg_index = headers.index("Avg group size nuc")
+    isolate_columns = headers[avg_index + 1:]
+    total_isolates = len(isolate_columns)
+    print(f"DEBUG: Found {total_isolates} isolates in dataset.")
 
-    # Find isolate columns: everything after 'No. isolates'
-    start_idx = fieldnames.index("No. isolates") + 1
-    isolate_columns = fieldnames[start_idx:]
-
+# Step 2. Identify core genes (>=95%)
+core_genes = set()
+with open(gene_presence_file, newline="") as f:
+    reader = csv.DictReader(f)
     for row in reader:
-        presence_count = sum(bool(row[isolate]) for isolate in isolate_columns)
-        if presence_count == len(isolate_columns):  # Present in all genomes
-            core_clusters.add(row["Gene"])
+        try:
+            no_isolates = int(row["No. isolates"])
+        except ValueError:
+            continue
+        percentage = (no_isolates / total_isolates) * 100
+        if percentage >= 95:
+            core_genes.add(row["Gene"])
 
-print(f"Found {len(core_clusters)} core gene clusters.")
+print(f"DEBUG: Found {len(core_genes)} core genes.")
 
-# Step 2: Parse clustered_proteins file to get protein IDs for each cluster
-print("Mapping core clusters to protein IDs...")
-cluster_to_proteins = {}
-
+# Step 3. Match core genes in clustered_proteins and take first representative ID
+core_reps = set()
 with open(clustered_proteins_file) as f:
     for line in f:
         if not line.strip():
             continue
-        cluster, proteins = line.strip().split(":")
-        protein_ids = proteins.strip().split()
-        if cluster in core_clusters:
-            cluster_to_proteins[cluster] = protein_ids
+        gene, proteins = line.split(":")
+        gene = gene.strip()
+        if gene in core_genes:
+            rep_id = proteins.strip().split()[0]  # take the first protein after colon
+            core_reps.add(rep_id)
 
-# Step 3: Load protein sequences from Prokka .faa
-print("Indexing protein sequences...")
-protein_db = SeqIO.to_dict(SeqIO.parse(protein_fasta_file, "fasta"))
+print(f"DEBUG: Extracted {len(core_reps)} representative IDs.")
 
-# Step 4: Extract all core protein sequences (no filtering)
-print("Extracting core protein sequences...")
-core_seqs = []
+# Step 4. Extract sequences whose headers contain any of the representative IDs
+records = []
+for record in SeqIO.parse(clustered_protein_fasta, "fasta"):
+    for rep in core_reps:
+        if rep in record.description:  # check substring match
+            records.append(record)
+            break
 
-for protein_ids in cluster_to_proteins.values():
-    for pid in protein_ids:
-        if pid in protein_db:
-            core_seqs.append(protein_db[pid])
-
-print(f"Writing {len(core_seqs)} core protein sequences to {output_fasta_file}")
-SeqIO.write(core_seqs, output_fasta_file, "fasta")
+SeqIO.write(records, output_fasta, "fasta")
+print(f"Saved {len(records)} core protein sequences to {output_fasta}")

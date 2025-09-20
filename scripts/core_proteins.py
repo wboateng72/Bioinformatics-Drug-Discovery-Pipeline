@@ -7,15 +7,6 @@ clustered_proteins_file = "/Users/seqafrica/PERSONAL_WORKSPACE/NOGUCHI FILES/GIT
 clustered_protein_fasta = "/Users/seqafrica/PERSONAL_WORKSPACE/NOGUCHI FILES/GITHUB REPOSITORY/Bioinformatics-Drug-Discovery-Pipeline/output/CORE_PROT_CDS/clustered_proteins.faa"
 output_fasta = "/Users/seqafrica/PERSONAL_WORKSPACE/NOGUCHI FILES/GITHUB REPOSITORY/Bioinformatics-Drug-Discovery-Pipeline/output/CORE_PROT_CDS/core_proteins.faa"
 
-import csv
-from Bio import SeqIO
-
-# Input files
-gene_presence_file = "/Users/seqafrica/PERSONAL_WORKSPACE/NOGUCHI FILES/GITHUB REPOSITORY/Bioinformatics-Drug-Discovery-Pipeline/output/CORE_PROT_CDS/gene_presence_absence.csv"
-clustered_proteins_file = "/Users/seqafrica/PERSONAL_WORKSPACE/NOGUCHI FILES/GITHUB REPOSITORY/Bioinformatics-Drug-Discovery-Pipeline/output/CORE_PROT_CDS/clustered_proteins"
-clustered_protein_fasta = "/Users/seqafrica/PERSONAL_WORKSPACE/NOGUCHI FILES/GITHUB REPOSITORY/Bioinformatics-Drug-Discovery-Pipeline/output/CORE_PROT_CDS/clustered_proteins.faa"
-output_fasta = "/Users/seqafrica/PERSONAL_WORKSPACE/NOGUCHI FILES/GITHUB REPOSITORY/Bioinformatics-Drug-Discovery-Pipeline/output/CORE_PROT_CDS/core_proteins.faa"
-
 # Step 1. Count isolates = number of columns after "Avg group size nuc"
 with open(gene_presence_file, newline="") as f:
     reader = csv.DictReader(f)
